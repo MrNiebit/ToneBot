@@ -8,19 +8,28 @@ export class HandlerLoader {
             const handlersPath = join(__dirname, '../handlers');
             console.log("handlersPath: ", handlersPath);
             
-            // 读取目录下的所有文件
-            const files = readdirSync(handlersPath);
-            
-            // 动态导入所有 handler 文件
-            for (const file of files) {
-                if (file.endsWith('.ts') || file.endsWith('.js')) {
-                    // 跳过基础类和索引文件
-                    if (file !== 'BaseHandler.ts' && file !== 'index.ts') {
-                        // console.log(`Loading handler: ${file}`);
-                        await import(join(handlersPath, file));
+            // 递归扫描目录下的所有文件
+            const scanDirectory = async (dirPath: string) => {
+                const entries = readdirSync(dirPath, { withFileTypes: true });
+                
+                for (const entry of entries) {
+                    const fullPath = join(dirPath, entry.name);
+                    
+                    if (entry.isDirectory()) {
+                        // 递归扫描子目录
+                        await scanDirectory(fullPath);
+                    } else if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.js'))) {
+                        // 跳过基础类和索引文件
+                        if (entry.name !== 'BaseHandler.ts' && entry.name !== 'index.ts') {
+                            // console.log(`Loading handler: ${entry.name}`);
+                            await import(fullPath);
+                        }
                     }
                 }
-            }
+            };
+            
+            // 开始递归扫描
+            await scanDirectory(handlersPath);
             
             console.log('All handlers loaded successfully');
         } catch (error) {
