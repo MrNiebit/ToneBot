@@ -4,10 +4,13 @@
   "description": "TS 开发QQ机器人",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "bin": "lib/demo/index.js",
   "scripts": {
     "start": "npm run build:live",
     "build": "tsc -p .",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/demo/index.ts"
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/demo/index.ts",
+    "pkg": "pkg .",
+    "build:exe": "npm run build && pkg lib/demo/index.js --target node18-win-x64 --output executable/app.exe"
   },
   "keywords": [
     "bot",
@@ -33,7 +36,7 @@
     "@types/lru-cache": "^7.10.10",
     "@types/node": "^20.12.6",
     "@types/ws": "^8.5.10",
-    "axios": "^1.7.7",
+    "axios": "^0.27.2",
     "long": "^5.2.3",
     "lru-cache": "^10.2.0",
     "nodemon": "^3.1.0",
@@ -42,5 +45,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.4",
     "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
   }
 }
