@@ -12,9 +12,9 @@ export class AliPanSearch extends BaseHandler {
             keyword: args[0],
             page: 1,
             s_type: 2,
-            from: 1,
-            code: 4321
+            from: 1
         });
+        // console.log(searchResult);
         
         const sourceName = searchApi.getSourceName();
         let resultStr = `🔍 ${sourceName}搜索结果：\n\n`;

@@ -7,7 +7,8 @@ class HttpUtils {
         headers: {
             'Content-Type': 'application/json',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-        }
+        },
+        proxy: false
     };
 
     /**
@@ -17,13 +18,11 @@ class HttpUtils {
      */
     static async get<T>(url: string, config: AxiosRequestConfig = {}): Promise<T> {
         try {
-            const response: AxiosResponse<T> = await axios.get(
-                url,
-                { ...this.baseConfig, ...config }
-            );
+            const finalConfig = { ...this.baseConfig, ...config };
+            const response: AxiosResponse<T> = await axios.get(url, finalConfig);
             return response.data;
-        } catch (error) {
-            console.error('GET request failed:', error);
+        } catch (error: any) {
+            console.error('GET request failed:', error.message);
             throw error;
         }
     }
