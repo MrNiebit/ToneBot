@@ -98,7 +98,7 @@ class VerifyCodeManager {
 // UpSo搜索实现
 class UpSoSearchStrategy implements SearchStrategy {
     private readonly baseUrl = 'https://upapi.juapp9.com/search';
-    private readonly ocrUrl = 'http://localhost:5000/ocr';
+    private readonly ocrUrl = 'http://127.0.0.1:5000/ocr';
 
     private async recognizeVerifyCode(codeUrl: string): Promise<string> {
         try {
