@@ -55,7 +55,7 @@ async function bootstrap() {
         if (responseMsg === undefined || responseMsg === "") {
           return
         }
-        let msg = Msg.builder().text(responseMsg).at(userId)
+        let msg = Msg.builder().text(`${responseMsg}\n`).at(userId)
         let a = await bot.sendGroupMessage(groupId, msg)
         if (a != null){
           let gm = await bot.getMsg(a.data.message_id)
