@@ -13,7 +13,7 @@ async function bootstrap() {
     
     // 启动你的应用
     
-    let port = 8082
+    let port = 8081
 
     console.log("开始启动")
     const centerMessageProcessor = new CenterMessageProcessor();
