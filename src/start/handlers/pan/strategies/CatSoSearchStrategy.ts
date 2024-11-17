@@ -1,8 +1,7 @@
 import HttpUtils from "../../../utils/HttpUtils";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig } from "axios";
 import * as crypto from "crypto";
-import { JSDOM } from "jsdom";
-import { SearchStrategy, SearchParams, SearchResponse, SearchItem, SearchDetailParams } from "./SearchStrategy";
+import { SearchStrategy, SearchParams, SearchResponse, SearchDetailParams } from "./SearchStrategy";
 import { SearchSource } from "../../../types/SearchTypes";
 
 interface CatSoSearchRequest extends SearchParams {
