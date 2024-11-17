@@ -1,4 +1,4 @@
 export interface ICommandHandler {
 
-    handle(args: string[]): Promise<string>;
+    handle(args: string[], userId?: number, groupId?: number): Promise<string>;
 } 

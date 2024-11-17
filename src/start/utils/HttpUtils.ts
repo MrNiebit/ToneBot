@@ -1,5 +1,10 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
+// 在类定义中添加一个接口
+interface ExtendedAxiosRequestConfig extends AxiosRequestConfig {
+    fullResponse?: boolean;
+}
+
 class HttpUtils {
     // 基础请求配置
     private static baseConfig: AxiosRequestConfig = {
@@ -16,11 +21,11 @@ class HttpUtils {
      * @param url 请求地址
      * @param config 额外配置
      */
-    static async get<T>(url: string, config: AxiosRequestConfig = {}): Promise<T> {
+    static async get<T>(url: string, config: ExtendedAxiosRequestConfig = {}): Promise<T | AxiosResponse<T>> {
         try {
             const finalConfig = { ...this.baseConfig, ...config };
             const response: AxiosResponse<T> = await axios.get(url, finalConfig);
-            return response.data;
+            return config.fullResponse ? response : response.data;
         } catch (error: any) {
             console.error('GET request failed:', error.message);
             throw error;
@@ -33,14 +38,14 @@ class HttpUtils {
      * @param data 请求数据
      * @param config 额外配置
      */
-    static async post<T>(url: string, data?: any, config: AxiosRequestConfig = {}): Promise<T> {
+    static async post<T>(url: string, data?: any, config: ExtendedAxiosRequestConfig = {}): Promise<T | AxiosResponse<T>> {
         try {
             const response: AxiosResponse<T> = await axios.post(
                 url,
                 data,
                 { ...this.baseConfig, ...config }
             );
-            return response.data;
+            return config.fullResponse ? response : response.data;
         } catch (error) {
             console.error('POST request failed:', error);
             throw error;
@@ -54,8 +59,8 @@ class HttpUtils {
      */
     static async getWithBase64Decode<T>(url: string, config: AxiosRequestConfig = {}): Promise<T> {
         try {
-            const response = await this.get<string>(url, config);
-            const decodedData = Buffer.from(response, 'base64').toString('utf-8');
+            const response = await this.get<string>(url, { ...config, fullResponse: false });
+            const decodedData = Buffer.from(response as string, 'base64').toString('utf-8');
             return JSON.parse(decodedData);
         } catch (error) {
             console.error('Base64 decode request failed:', error);

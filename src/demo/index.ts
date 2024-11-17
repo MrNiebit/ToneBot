@@ -31,7 +31,7 @@ async function bootstrap() {
       let userId = event?.user_id
       if (userId != undefined && rawMsg != undefined) {
         console.log(`收到私聊消息，发送者: ${userId.toString()}，内容: ${rawMsg}`)
-        let responseMsg = await centerMessageProcessor.handleMessage(rawMsg)
+        let responseMsg = await centerMessageProcessor.handleMessage(rawMsg, userId)
         if (responseMsg === undefined || responseMsg === "") {
           return
         }
@@ -50,7 +50,7 @@ async function bootstrap() {
       console.log(event?.message_id)
       if (userId != undefined && groupId != undefined && rawMsg != undefined){
         console.log(`收到群聊消息，群号: ${groupId.toString()}，发送者: ${userId.toString()}，内容: ${rawMsg}`)
-        let responseMsg = await centerMessageProcessor.handleMessage(rawMsg)
+        let responseMsg = await centerMessageProcessor.handleMessage(rawMsg, userId, groupId)
         console.log("responseMsg: ", responseMsg);
         if (responseMsg === undefined || responseMsg === "") {
           return
