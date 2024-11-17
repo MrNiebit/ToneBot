@@ -21,13 +21,17 @@ export class HelpHandler extends BaseHandler {
             handlerToCommands.get(handler)?.push(cmd);
         }
         // 构建帮助信息
-        let helpText = '可用命令列表：\n';
+        let helpText = '📋 命令菜单\n';
+        helpText += '━━━━━━━━━━━━━━━━━━━━━━\n';
+        
         for (const commandGroup of Array.from(handlerToCommands.values())) {
             // 跳过帮助命令组
             if (commandGroup.includes('帮助') || commandGroup.includes('菜单') || commandGroup.includes('help')) continue;
-            helpText += `        - ${commandGroup.join('/')}\n`;
+            helpText += `🔸 ${commandGroup.join('/')}\n`;
         }
         
+        helpText += '━━━━━━━━━━━━━━━━━━━━━━\n';
+        helpText += '💡 提示：输入任意命令即可使用\n';
         return helpText;
     }
 }
