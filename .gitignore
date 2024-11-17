@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 *.txt
-
+executable
+executable/app.exe
 # local env files
 .env.local
 .env.*.local

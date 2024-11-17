@@ -42,6 +42,8 @@ export class HandlerLoader {
                 await import("../handlers/MineCraftServerStatusHandler");
                 await import("../handlers/pan/AliPanSearch");
                 await import("../handlers/pan/SearchSourceManager");
+                await import("../handlers/AIChatHandler");
+                await import("../handlers/AIClearHandler");
             }
             
             console.log('All handlers loaded successfully');
