@@ -96,23 +96,36 @@ class McUtils {
                     
                     // Skip packet length
                     let offset = 0;
-                    while ((buffer[offset] & 0x80) !== 0) offset++;
+                    while (offset < buffer.length && (buffer[offset] & 0x80) !== 0) offset++;
                     offset++;
                     
                     // Skip packet ID
-                    while ((buffer[offset] & 0x80) !== 0) offset++;
+                    while (offset < buffer.length && (buffer[offset] & 0x80) !== 0) offset++;
                     offset++;
                     
                     // Skip string length
-                    while ((buffer[offset] & 0x80) !== 0) offset++;
+                    while (offset < buffer.length && (buffer[offset] & 0x80) !== 0) offset++;
                     offset++;
                     
                     // Read the actual JSON string
                     const jsonString = buffer.slice(offset).toString('utf8');
-                    const jsonData = JSON.parse(jsonString);
-                    resolve(jsonData);
+                    
+                    // 验证JSON字符串是否完整
+                    if (!jsonString.endsWith('}')) {
+                        return; // 等待更多数据
+                    }
+
+                    try {
+                        const jsonData = JSON.parse(jsonString);
+                        resolve(jsonData);
+                    } catch (jsonError) {
+                        console.error('Invalid JSON:', jsonString);
+                        reject(new Error('Invalid server response'));
+                    }
+                    
                     socket.end();
                 } catch (err) {
+                    console.error('Error processing data:', err);
                     reject(err);
                 }
             });

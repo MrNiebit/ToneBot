@@ -16,11 +16,20 @@ export class MineCraftServerStatusHandler extends BaseHandler {
         if (!serverInfo) {
             return "服务器连接失败";
         }
-        return `🌐 服务器状态 | ${serverInfo.ip}:${serverInfo.port}\n` +
+        let response = `🌐 服务器状态 | ${serverInfo.ip}:${serverInfo.port}\n` +
                `━━━━━━━━━━━━━━━━━━━━━━\n` +
                `📌 版本信息：${serverInfo.versionName}\n` +
                `🔧 协议版本：${serverInfo.versionProtocol}\n` +
-               `👥 在线人数：${serverInfo.onlinePlayers}/${serverInfo.maxPlayers}\n` +
-               `━━━━━━━━━━━━━━━━━━━━━━`;
+               `👥 在线人数：${serverInfo.onlinePlayers}/${serverInfo.maxPlayers}\n`;
+
+        if (serverInfo.playerList.length > 0) {
+            response += `\n📋 在线玩家列表：\n`;
+            serverInfo.playerList.forEach(player => {
+                response += `👤 ${player}\n`;
+            });
+        }
+
+        response += `━━━━━━━━━━━━━━━━━━━━━━`;
+        return response;
     }
 }
