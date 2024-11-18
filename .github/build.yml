@@ -1,0 +1,39 @@
+name: Build Node.js Binary for Linux
+
+on:
+  workflow_dispatch:  # 只在手动触发时执行
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 使用 Ubuntu 环境构建
+
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 设置 Node.js 环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # 设置 Node.js 版本
+
+      # 安装依赖
+      - name: Install dependencies
+        run: npm install
+
+      # 编译 TypeScript 代码
+      - name: Build TypeScript
+        run: npm run build
+
+      # 打包成 Linux 可执行文件
+      - name: Build Linux Executable
+        run: npm run build:linux
+
+      # 上传构建产物
+      - name: Upload Linux Binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-linux
+          path: executable/app-linux
+
